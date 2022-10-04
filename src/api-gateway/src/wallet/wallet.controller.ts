@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { lastValueFrom } from 'rxjs';
 import { CreateWalletRequest } from './dtos/create-wallet-request.dto';
 import { WalletService } from './wallet.service';
 
@@ -17,9 +18,9 @@ export class WalletController {
 
   @Post("/create-wallet")
   async createWallet(@Body() createWalletRequest: CreateWalletRequest) {
-    const address = await this.walletService.createWallet(createWalletRequest);
+    const address = await lastValueFrom(await this.walletService.createWallet(createWalletRequest));
     const callbackData = { 
-      walletAddress: address,
+      walletAddress: address.walletAddress,
       userId: createWalletRequest.userId
     }
 
