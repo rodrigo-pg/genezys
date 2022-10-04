@@ -4,12 +4,29 @@ services:
     image: "mongo:latest"
     ports:
       - "27017:27017"
+    networks:
+      - backend
   gateway:
     build: ./src/api-gateway
     ports:
       - "3000:3000"
+    networks:
+      - backend
   wallet:
     build: ./src/wallet-service
+    ports:
+      - "3005:3005"
     depends_on:
       mongodb:
         condition: service_started
+    networks:
+      - backend
+  auth:
+    build: ./src/auth-service
+    ports:
+      - "3001:3001"
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge

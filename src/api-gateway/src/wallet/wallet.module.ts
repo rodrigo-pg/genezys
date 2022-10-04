@@ -9,7 +9,16 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    ClientsModule.register([{name: "WALLET_MICROSERVICE", transport: Transport.TCP}]),
+    ClientsModule.register([
+      {
+        name: "WALLET_MICROSERVICE", 
+        transport: Transport.TCP,
+        options: {
+          host: "wallet",
+          port: 3005
+        }
+      }
+    ]),
     ConfigModule.forRoot(),
     JwtModule,
     HttpModule

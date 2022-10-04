@@ -4,6 +4,7 @@ import { WalletController } from './wallet.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Wallet, WalletSchema } from './schemas/wallet.schema';
 import { ConfigModule } from '@nestjs/config';
+import Web3 from "web3";
 
 @Module({
   imports: [
@@ -12,6 +13,14 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot()
   ],
   controllers: [WalletController],
-  providers: [WalletService]
+  providers: [
+    WalletService,
+    {
+      provide: Web3,
+      useFactory: async () => {
+        return new Web3(process.env.ALCHEMY_GATEWAY);
+      }
+    }
+  ]
 })
 export class WalletModule {}
